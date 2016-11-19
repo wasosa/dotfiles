@@ -1,0 +1,19 @@
+[color]
+	ui = auto
+[user]
+	name = Walter Sosa
+	email = wasosa@oblong.com
+[alias]
+       lol  = log --graph --decorate --pretty=oneline --abbrev-commit
+       lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+       this = rev-parse --abbrev-ref HEAD
+       meld = !$HOME/bin/git-meld
+       refresh = !$HOME/bin/git-refresh
+       fo = fetch origin
+       rom = rebase origin/master
+       roi = !$HOME/bin/git-rom
+       ss = stash save
+       sa = stash apply
+       dom = diff origin/master
+       doml = diff origin/master --name-status
+# difftool --no-prompt --tool=meld

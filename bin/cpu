@@ -1,0 +1,33 @@
+#!/bin/sh
+
+# Based on column info from: http://www.linuxhowtos.org/System/procstat.htm
+P1=`head -n 1 /proc/stat`
+sleep 0.100s
+P2=`head -n 1 /proc/stat`
+
+idle1=`echo $P1 | awk '{ print $5 }'`
+total1=`echo $P1 | awk '{ print $2+$3+$4+$5+$6+$7+$8}'`
+idle2=`echo $P2 | awk '{ print $5 }'`
+total2=`echo $P2 | awk '{ print $2+$3+$4+$5+$6+$7+$8}'`
+total=$((total2-total1))
+idle=$((idle2-idle1))
+idle=$((idle * 1005))
+total=$((total * 10))
+percentage=$((idle/total))
+percentage=$((100-percentage)) # do cpu, not idle
+
+fill='='
+blank=' '
+delim="."
+open="["
+close="]"
+max=50
+count=$((percentage * max))
+count=$((count / 100))
+
+printf " CPU: %2d%% $open" $percentage
+for i in $(seq 1 $count)          ; do printf "$fill" ; done
+for i in $(seq $((count+1)) $max) ; do printf "$blank" ; done
+printf "$close\n"
+
+# end of file

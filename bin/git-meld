@@ -1,0 +1,5 @@
+#!/bin/sh
+
+git difftool --no-prompt --tool=meld "$@"
+
+# end of file

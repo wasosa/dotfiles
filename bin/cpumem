@@ -1,0 +1,54 @@
+#!/usr/bin/env python
+
+# Based on column info from: http://www.linuxhowtos.org/System/procstat.htm
+
+from time import sleep
+from datetime import datetime
+
+def getCpu():
+    with open('/proc/stat') as f:
+        cpu1 = f.readline()
+    sleep(5.000)
+    with open('/proc/stat') as f:
+        cpu2 = f.readline()
+
+    return (cpu1, cpu2)
+
+def getTotalCpu(cpu):
+    columns = cpu.split()
+    return sum([int(x) for x in columns[1:8] ])
+
+def getIdleCpu(cpu):
+    columns = cpu.split()
+    return int(columns[4])
+
+def getPercentMem():
+    with open('/proc/meminfo') as f:
+        total = f.readline().split()[1]
+        f.readline() # Ignore MemFree
+        avail = f.readline().split()[1]
+    total = int(total) * 10
+    avail = int(avail) * 1005
+    percent = avail/total
+    percent = 100 - percent
+
+    return percent
+
+def getPercentCpu(cpu1, cpu2):
+    total = getTotalCpu(cpu2) - getTotalCpu(cpu1)
+    idle = getIdleCpu(cpu2) - getIdleCpu(cpu1)
+
+    idle = idle * 1005
+    total = total * 10
+    percent = idle/total
+    percent = 100 - percent
+
+    return percent
+
+cpu1, cpu2 = getCpu()
+cpu = getPercentCpu(cpu1, cpu2)
+mem = getPercentMem()
+
+print("%3d [%s%s] %3d [%s%s] %s" % (cpu, '='*(cpu/2), ' '*(50-cpu/2), mem, '='*(mem/2), ' '*(50-mem/2), datetime.today()))
+
+# end of file
