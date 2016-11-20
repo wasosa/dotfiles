@@ -4,7 +4,7 @@ unset SESSION_MANAGER
 vncconfig -nowin &
 
 while [ true ] ; do
-    $HOME/.builds/dwm-5.7.2/bin/dwm &
+    $HOME/.builds/dwm-6.1/bin/dwm &
     xsetroot -name "$(date +"%A %Y-%m-%d %H:%M:%S")$($HOME/bin/cpu)"
     sleep 1
 done
