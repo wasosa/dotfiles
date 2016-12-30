@@ -3,18 +3,12 @@
 set -o errexit
 set -o pipefail
 
-lhs=
-rhs=
-quiet=false
-diff=true
-common=false
-
 usage()
 {
   echo
   echo "USAGE: $0 <lhs> <rhs> [flags]"
   echo
-  echo "FLAGS: --[no-]common|--[no-]diff|--help|--quiet|--verbose"
+  echo "FLAGS: --lhs|--rhs|--both|--quiet"
   echo
 }
 
@@ -32,49 +26,89 @@ check_file()
   fi
 }
 
-for arg in $@
-do
-  case $arg in
-    --help|-h) usage ; exit 0;;
-    --quiet|-q) quiet=true ;;
-    --diff) diff=true ;;
-    --no-diff) diff=false ;;
-    --common) common=true ;;
-    --no-common) common=false ;;
-    *) if test -z "$lhs" ; then lhs=$arg ; elif test -z "$rhs" ; then rhs=$arg ; fi ;;
-  esac
-done
+parse_args()
+{
+  for arg in $@
+  do
+    case $arg in
+      --help|-h) usage ; exit 0;;
+      --quiet|-q) opt_quiet=true ;;
+      --common) opt_common=true ;;
+      --lhs) opt_lhs=true ;;
+      --rhs) opt_rhs=true ;;
+      *) if test -z "$lhs" ; then lhs=$arg ; elif test -z "$rhs" ; then rhs=$arg ; fi ;;
+    esac
+  done
+}
 
+get_common_lines()
+{
+  grep -Fx $lhs -f $rhs
+}
+
+get_lhs_lines()
+{
+  grep -Fxv $lhs -f $rhs
+}
+
+get_rhs_lines()
+{
+  grep -Fxv $rhs -f $lhs
+}
+
+print_common_header()
+{
+  if $opt_quiet ; then return ; fi
+  /usr/bin/printf "#\n# %d LINES IN COMMON\n#\n" $(get_common_lines | wc -l)
+}
+
+print_lhs_header()
+{
+  if $opt_quiet ; then return ; fi
+  /usr/bin/printf "#\n# %d LINES ONLY IN $lhs\n#\n" $(get_lhs_lines | wc -l)
+}
+
+print_rhs_header()
+{
+  if $opt_quiet ; then return ; fi
+  /usr/bin/printf "#\n# %d LINES ONLY IN $rhs\n#\n" $(get_rhs_lines | wc -l)
+}
+
+print_summary()
+{
+  if ! "$opt_common" && ! "$opt_lhs" && ! "$opt_rhs"
+  then
+    usage
+    exit 0
+  fi
+}
+
+
+lhs=
+rhs=
+opt_lhs=false
+opt_rhs=false
+opt_common=false
+opt_quiet=false
+
+parse_args $@
 check_file $lhs
 check_file $rhs
-
-if $quiet
+print_summary
+if "$opt_common"
 then
-  echo
-  /usr/bin/printf "%4d LINES IN BOTH\n" $(grep -Fx $lhs -f $rhs -c)
-  /usr/bin/printf "%4d LINES ONLY IN $lhs\n" $(grep -Fxv $lhs -f $rhs -c)
-  /usr/bin/printf "%4d LINES ONLY IN $rhs\n" $(grep -Fxv $rhs -f $lhs -c)
-  echo
-else
-  if $common
-  then
-    echo
-    /usr/bin/printf "==== %4d LINES IN BOTH: ====\n" $(grep -Fx $lhs -f $rhs -c)
-    echo
-    grep -Fx $lhs -f $rhs
-  fi
-  if $diff
-  then
-    echo
-    /usr/bin/printf "==== %4d LINES ONLY IN $lhs: ====\n" $(grep -Fxv $lhs -f $rhs -c)
-    echo
-    grep -Fxv $lhs -f $rhs
-    echo
-    /usr/bin/printf "==== %4d LINES ONLY IN $rhs: ====\n" $(grep -Fxv $rhs -f $lhs -c)
-    echo
-    grep -Fxv $rhs -f $lhs
-    echo
-  fi
+  print_common_header
+  get_common_lines
+fi
+if "$opt_lhs"
+then
+  print_lhs_header
+  get_lhs_lines
+fi
+if "$opt_rhs"
+then
+  print_rhs_header
+  get_rhs_lines
 fi
 
 # end of file
