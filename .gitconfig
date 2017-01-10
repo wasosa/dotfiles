@@ -16,4 +16,6 @@
        sa = stash apply
        dom = diff origin/master
        doml = diff origin/master --name-status
-# difftool --no-prompt --tool=meld
+       awk = grep --break --heading --line-number
+[grep]
+	lineNumber = true
