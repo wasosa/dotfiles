@@ -1,9 +1,9 @@
 .PHONY: all clean
 
-FILES = .bashrc .emacs .gitconfig .profile .tumx.conf
+FILES = .bashrc .emacs .gitconfig .profile .tmux.conf
 DIRS = bin .vnc .ccache
 
 all:
-	echo cp -r $(FILES) $(DIRS) $$HOME/
+	cp -r $(FILES) $(DIRS) $$HOME/
 
 # end of file
