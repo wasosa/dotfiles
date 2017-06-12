@@ -21,14 +21,14 @@ check_file()
   fi
   if ! test -f "$1"
   then
-    echo ERROR: unable to find: $1
+    echo "ERROR: unable to find: $1"
     exit 1
   fi
 }
 
 parse_args()
 {
-  for arg in $@
+  for arg in "$@"
   do
     case $arg in
       --help|-h) usage ; exit 0;;
@@ -43,35 +43,35 @@ parse_args()
 
 get_common_lines()
 {
-  grep -Fx $lhs -f $rhs
+  grep -Fx "$lhs" -f "$rhs"
 }
 
 get_lhs_lines()
 {
-  grep -Fxv $lhs -f $rhs
+  grep -Fxv "$lhs" -f "$rhs"
 }
 
 get_rhs_lines()
 {
-  grep -Fxv $rhs -f $lhs
+  grep -Fxv "$rhs" -f "$lhs"
 }
 
 print_common_header()
 {
   if $opt_quiet ; then return ; fi
-  /usr/bin/printf "#\n# %d LINES IN COMMON\n#\n" $(get_common_lines | wc -l)
+  /usr/bin/printf "#\n# %d LINES IN COMMON\n#\n" "$(get_common_lines | wc -l)"
 }
 
 print_lhs_header()
 {
   if $opt_quiet ; then return ; fi
-  /usr/bin/printf "#\n# %d LINES ONLY IN $lhs\n#\n" $(get_lhs_lines | wc -l)
+  /usr/bin/printf "#\n# %d LINES ONLY IN $lhs\n#\n" "$(get_lhs_lines | wc -l)"
 }
 
 print_rhs_header()
 {
   if $opt_quiet ; then return ; fi
-  /usr/bin/printf "#\n# %d LINES ONLY IN $rhs\n#\n" $(get_rhs_lines | wc -l)
+  /usr/bin/printf "#\n# %d LINES ONLY IN $rhs\n#\n" "$(get_rhs_lines | wc -l)"
 }
 
 print_summary()
@@ -91,7 +91,7 @@ opt_rhs=false
 opt_common=false
 opt_quiet=false
 
-parse_args $@
+parse_args "$@"
 check_file $lhs
 check_file $rhs
 print_summary
