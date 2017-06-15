@@ -2,6 +2,6 @@
 
 set -e
 
-docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $@
+docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$@"
 
 # end of file

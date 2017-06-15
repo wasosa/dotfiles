@@ -26,3 +26,7 @@ shellcheck:
   - apt-get update
   - apt-get install -y shellcheck
   - shellcheck bin/cpu
+  - shellcheck bin/dwm-clock
+  - shellcheck bin/getip
+  - shellcheck bin/same
+  - shellcheck .vnc/xstartup

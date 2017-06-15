@@ -2,7 +2,7 @@
 
 while true
 do
-    xsetroot -name "`date +"%A %Y-%m-%d %H:%M:%S "` `sh /home/wasosa/bin/cpu`" &
+    xsetroot -name "$(date +"%A %Y-%m-%d %H:%M:%S ") $(sh /home/wasosa/bin/cpu)" &
     sleep 1
 done
 
