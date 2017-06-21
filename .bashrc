@@ -21,7 +21,7 @@ shopt -s checkwinsize
 shopt -s globstar
 shopt -s direxpand >& /dev/null || true
 
-PS1="[\u][\h][\w][\$?]: "
+PS1='[$(date +%T)][$?]: '
 
 case "$TERM" in
 xterm*|rxvt*)
