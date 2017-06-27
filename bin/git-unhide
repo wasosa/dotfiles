@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -o errexit
+set -o pipefail
+
+git update-index --no-assume-unchanged $@

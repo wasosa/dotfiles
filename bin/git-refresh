@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -o errexit
+set -o pipefail
+
+master=master
+
+url="$(git remote -v 2>/dev/null)"
+if echo $url | egrep -q '/mezzanine.git'
+then
+  master=mz
+elif echo $url | egrep -q '/yovo.git'
+then
+  master=iz
+fi
+
+git fetch origin
+git stash save
+git checkout $master
+git reset --hard origin/$master
+git pull origin $master
+git status
+
+# end of file
