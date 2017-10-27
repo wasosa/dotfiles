@@ -1,0 +1,74 @@
+#!/bin/bash
+
+# morun - more run
+# Runs some command repeatedly until it fails or until you stop it.
+# Useful for stress testing stuff.
+
+# TRIVIA: this was almost named:
+#   failure-monitor --> fmon
+#   monitor-fail --> mail
+
+# TIPS: for complex shell commandlines use:
+#   morun bash -c '<crazy-cmdline-here>'
+
+print_count()
+{
+  local total="$1"
+  echo "Current run: $total"
+  echo
+}
+
+set_trap()
+{
+  trap $1 \
+       EXIT HUP INT QUIT ILL ABRT FPE SEGV PIPE ALRM \
+       TERM BUS PROF SYS TRAP VTALRM XCPU XFSZ IO PWR
+}
+
+summary()
+{
+  if [[ "$status" -eq 0 ]]; then
+    echo
+    echo 'All runs succeeded'
+    echo "(see: $output)"
+    echo
+  else
+    echo '==================================== output ===================================='
+    tail "$output"
+    echo '================================================================================'
+    echo
+    echo 'Doh! You might want to fix that.'
+    echo "(see full output here: $output)"
+    echo
+  fi
+  echo '======================='
+  echo "Successful runs: $total"
+  echo '======================='
+  echo
+
+  set_trap -
+  exit "$status"
+}
+
+main()
+{
+  echo
+  echo '================================== commandline ================================='
+  echo 'Running:' "$@"
+  echo '================================================================================'
+  echo
+
+  mkdir -p /tmp/morun
+  while [[ $status -eq 0 ]]; do
+    print_count "$total"
+    total=$((total+1))
+    "$@" > "$output" 2>&1
+    status=$?
+  done
+}
+
+total=0
+status=0
+output=/tmp/morun/$$
+set_trap summary
+main "$@"

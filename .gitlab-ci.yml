@@ -28,5 +28,6 @@ shellcheck:
   - shellcheck bin/cpu
   - shellcheck bin/dwm-clock
   - shellcheck bin/getip
+  - shellcheck bin/morun
   - shellcheck bin/same
   - shellcheck .vnc/xstartup
