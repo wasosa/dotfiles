@@ -11,13 +11,6 @@
 # TIPS: for complex shell commandlines use:
 #   morun bash -c '<crazy-cmdline-here>'
 
-print_count()
-{
-  local total="$1"
-  echo "Current run: $total"
-  echo
-}
-
 set_trap()
 {
   trap $1 \
@@ -27,18 +20,12 @@ set_trap()
 
 summary()
 {
-  if [[ "$status" -eq 0 ]]; then
-    echo
-    echo 'All runs succeeded'
-    echo "(see: $output)"
-    echo
-  else
+  if [[ -s "$output" ]]; then
     echo '==================================== output ===================================='
     tail "$output"
-    echo '================================================================================'
     echo
-    echo 'Doh! You might want to fix that.'
-    echo "(see full output here: $output)"
+    echo "See: $output"
+    echo '================================================================================'
     echo
   fi
   echo '======================='
@@ -47,7 +34,6 @@ summary()
   echo
 
   set_trap -
-  exit "$status"
 }
 
 main()
@@ -59,16 +45,15 @@ main()
   echo
 
   mkdir -p /tmp/morun
-  while [[ $status -eq 0 ]]; do
-    print_count "$total"
+  while [[ $? -eq 0 ]]; do
+    echo "Current run: $total"
+    echo
     total=$((total+1))
     "$@" > "$output" 2>&1
-    status=$?
   done
 }
 
 total=0
-status=0
 output=/tmp/morun/$$
 set_trap summary
 main "$@"
