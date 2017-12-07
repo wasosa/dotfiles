@@ -2,9 +2,9 @@
 
 unset SESSION_MANAGER
 vncconfig -nowin &
+xsetroot -solid black
 
-# shellcheck disable=SC2078
-while [ true ] ; do
+while true; do
     "$HOME/.builds/dwm-6.1/bin/dwm" &
     xsetroot -name "$(date +"%A %Y-%m-%d %H:%M:%S")$("$HOME/bin/cpu")"
     sleep 1
