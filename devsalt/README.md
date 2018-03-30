@@ -8,7 +8,7 @@ Use salt to setup new dev machine.
 3. Accept key for minion on the master (salt-key -A ...)
 4. On the master, run:
 
-    sudo mkdir /srv/salt
+    sudo mkdir -p /srv/salt
     sudo cp dev.sls /srv/salt/
     sudo salt '<new-machine-name>' state.apply dev
 

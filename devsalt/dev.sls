@@ -1,7 +1,7 @@
-wget:
+curl:
   pkg.installed
 
-curl:
+wget:
   pkg.installed
 
 install-oblong-repo:
@@ -9,13 +9,13 @@ install-oblong-repo:
   - name: install-oblong-repo
   - source: http://buildhost4.oblong.com/oblong-repo/install-oblong-repo
 
-linux-generic-hwe-16.04:
-  pkg.installed
-
 bats:
   pkg.installed
 
-links:
+docker-ce:
+  pkg.installed
+
+docker-compose:
   pkg.installed
 
 emacs:
@@ -24,13 +24,31 @@ emacs:
 git:
   pkg.installed
 
+golang-go:
+  pkg.installed
+
+htop:
+  pkg.installed
+
+jq:
+  pkg.installed
+
+links:
+  pkg.installed
+
+linux-generic-hwe-16.04:
+  pkg.installed
+
 oblong-vagrant:
   pkg.installed
 
-docker-ce:
+shellcheck:
   pkg.installed
 
-docker-compose:
+sysdig:
+  pkg.installed
+
+vnc4server:
   pkg.installed
 
 wasosa:
