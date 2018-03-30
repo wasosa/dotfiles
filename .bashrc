@@ -51,6 +51,10 @@ export VISUAL='emacs -nw'
 
 [ -e /etc/bash_completion.d/git ] && source /etc/bash_completion.d/git
 
-export DISPLAY=:0
+export DISPLAY=:9
+export COLUMNS
+export LINES
+
+[ -e $HOME/.gitlab-ci-tokens ] && source $HOME/.gitlab-ci-tokens
 
 # end of file
