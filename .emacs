@@ -93,10 +93,9 @@
 (define-key ws-map "k" 'keep-lines)
 (define-key ws-map "f" 'follow-switch-to-buffer-all)
 (define-key ws-map "w" 'ws-show-and-copy-file-name)
-;; (define-key ws-map "b" 'ws-vc-version-diff-bugfixes)
 (define-key ws-map "i" 'overwrite-mode)
 (define-key global-map "\C-xv " 'ws-vc-version-diff-origin-master)
-(define-key global-map "\C-xv\C-m" 'ws-vc-version-diff-origin-branch)
+(define-key global-map "\C-xvm" 'ws-vc-version-diff-origin-branch)
 
 ;; other preferences
 (setq inhibit-startup-message t)
