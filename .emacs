@@ -8,6 +8,16 @@
 ;(require 'xclip)
 ;(turn-on-xclip)
 
+(require 'fill-column-indicator)
+(define-globalized-minor-mode global-fci-mode fci-mode
+  (lambda () (fci-mode 1)))
+(global-fci-mode 1)
+(setq fci-rule-width 1)
+(setq fci-rule-color "darkblue")
+(setq-default fill-column 80)
+(set-fill-column 80)
+(setq-default fci-column 80)
+
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward uniquify-separator ":")
 
@@ -45,10 +55,16 @@
   (kill-new buffer-file-name)
   )
 
-;; (defun ws-vc-version-diff-bugfixes ()
-;;   (interactive)
-;;   (vc-version-diff buffer-file-name "bugfixes" nil)
-;;   )
+(defun ws-vc-version-diff-origin-master ()
+  (interactive)
+  (vc-version-diff buffer-file-name "origin/master" nil)
+)
+
+(defun ws-vc-version-diff-origin-branch ()
+  (interactive)
+  (let ((branch (read-string "Enter branch name:")))
+    (vc-version-diff buffer-file-name branch nil))
+)
 
 (defun ws-revert-buffer ()
   "revert buffer without confirmaiton"
@@ -79,6 +95,8 @@
 (define-key ws-map "w" 'ws-show-and-copy-file-name)
 ;; (define-key ws-map "b" 'ws-vc-version-diff-bugfixes)
 (define-key ws-map "i" 'overwrite-mode)
+(define-key global-map "\C-xv " 'ws-vc-version-diff-origin-master)
+(define-key global-map "\C-xv\C-m" 'ws-vc-version-diff-origin-branch)
 
 ;; other preferences
 (setq inhibit-startup-message t)
