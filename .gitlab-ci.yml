@@ -27,8 +27,9 @@ shellcheck:
   script:
   - apt-get update
   - apt-get install -y shellcheck
+  - shellcheck .vnc/xstartup
   - shellcheck bin/dwm-clock
   - shellcheck bin/getip
+  - shellcheck bin/git-refresh
   - shellcheck bin/morun
   - shellcheck bin/same
-  - shellcheck .vnc/xstartup
