@@ -6,8 +6,10 @@ before_script:
   tags:
   - docker
   script:
-  - pip install --user pylint
+  - pip install --user pylint flake8
   - python -m pylint -E bin/cpumem
+  - python -m pylint bin/cpu
+  - python -m flake8 bin/cpu
 
 python2.7:
   <<: *python
@@ -25,7 +27,6 @@ shellcheck:
   script:
   - apt-get update
   - apt-get install -y shellcheck
-  - shellcheck bin/cpu
   - shellcheck bin/dwm-clock
   - shellcheck bin/getip
   - shellcheck bin/morun

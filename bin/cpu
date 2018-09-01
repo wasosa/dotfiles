@@ -1,34 +1,72 @@
-#!/bin/sh
+#!/usr/bin/env python
+
+"""Calculates percent of cpu usage in 100ms and prints graphically"""
+
+from __future__ import print_function
+import time
 
 # Based on column info from: http://www.linuxhowtos.org/System/procstat.htm
-P1=$(head -n 1 /proc/stat)
-sleep 0.100s
-P2=$(head -n 1 /proc/stat)
+#
+# Columns are:
+#
+# 0 - label
+# 1 - user
+# 2 - nice
+# 3 - system
+# 4 - idle
+# 5 - iowait
+# 6 - irq
+# 7 - softirq
 
-idle1=$(echo "$P1" | awk '{ print $5 }')
-total1=$(echo "$P1" | awk '{ print $2+$3+$4+$5+$6+$7+$8}')
-idle2=$(echo "$P2" | awk '{ print $5 }')
-total2=$(echo "$P2" | awk '{ print $2+$3+$4+$5+$6+$7+$8}')
-total=$((total2-total1))
-idle=$((idle2-idle1))
-idle=$((idle * 1005))
-total=$((total * 10))
-percentage=$((idle/total))
-percentage=$((100-percentage)) # do cpu, not idle
 
-fill='='
-blank=' '
-open="["
-close="]"
-max=50
-count=$((percentage * max))
-count=$((count / 100))
+def proc_stat():
+    """Returns first line in /proc/stat"""
+    with open('/proc/stat') as handle:
+        return handle.readline()
 
-printf " CPU: %2d%% %c" $percentage "$open"
-# shellcheck disable=SC2034
-for i in $(seq 1 $count)          ; do printf "%c" "$fill" ; done
-# shellcheck disable=SC2034
-for i in $(seq $((count+1)) $max) ; do printf "%c" "$blank" ; done
-printf "%c\n" "$close"
+
+def total_from_proc_stat(line):
+    """Returns value of Total column in a line from /proc/stat"""
+    numbers = [int(x) for x in line.split()[1:7]]
+    return sum(numbers)
+
+
+def idle_from_proc_stat(line):
+    """Returns value of Idle column in a line from /proc/stat"""
+    return int(line.split()[4])
+
+
+def print_percentage(percentage):
+    """Print a one-line histogram to represent percentage"""
+
+    total = 50
+    count = (percentage * total) / 100
+    fill = '=' * count
+    blank = ' ' * (total - count)
+    left = '['
+    right = ']'
+
+    print(" CPU: %2d%% %c%s%s%c" % (percentage, left, fill, blank, right))
+
+
+def main():
+    """Main function"""
+
+    data1 = proc_stat()
+    time.sleep(0.100)
+    data2 = proc_stat()
+
+    idle = idle_from_proc_stat(data2) - idle_from_proc_stat(data1)
+    total = total_from_proc_stat(data2) - total_from_proc_stat(data1)
+
+    # Multiply by 1005 and divide by 10 to round to the nearest 1%
+    percent_idle = (idle * 1005) / (total * 10)
+    percent_used = 100 - percent_idle
+
+    print_percentage(percent_used)
+
+
+if __name__ == "__main__":
+    main()
 
 # end of file
