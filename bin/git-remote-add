@@ -17,15 +17,15 @@ get_remote()
 {
   local origin="$1"
   local user="$2"
-
-  echo "$origin" | sed -e "s|:.*/|:$user/|g"
+  echo "${origin/:*\//:$user\/}"
 }
 
 add_remote()
 {
-  local user="$1"
-  local origin="$(get_origin)"
-  local remote="$(get_remote $origin $user)"
+  local user origin remote
+  user="$1"
+  origin="$(get_origin)"
+  remote="$(get_remote "$origin" "$user")"
   git remote add "$user" "$remote"
 }
 

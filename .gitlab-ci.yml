@@ -30,6 +30,9 @@ shellcheck:
   - shellcheck .vnc/xstartup
   - shellcheck bin/dwm-clock
   - shellcheck bin/getip
+  - shellcheck bin/git-meld
   - shellcheck bin/git-refresh
+  - shellcheck bin/git-remote-add
+  - shellcheck bin/git-skipci
   - shellcheck bin/morun
   - shellcheck bin/same

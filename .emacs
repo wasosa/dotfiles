@@ -8,15 +8,15 @@
 ;(require 'xclip)
 ;(turn-on-xclip)
 
-(require 'fill-column-indicator)
-(define-globalized-minor-mode global-fci-mode fci-mode
-  (lambda () (fci-mode 1)))
-(global-fci-mode 1)
-(setq fci-rule-width 1)
-(setq fci-rule-color "darkblue")
-(setq-default fill-column 80)
-(set-fill-column 80)
-(setq-default fci-column 80)
+;; (require 'fill-column-indicator)
+;; (define-globalized-minor-mode global-fci-mode fci-mode
+;;   (lambda () (fci-mode 1)))
+;; (global-fci-mode 1)
+;; (setq fci-rule-width 1)
+;; (setq fci-rule-color "darkblue")
+;; (setq-default fill-column 80)
+;; (set-fill-column 80)
+;; (setq-default fci-column 80)
 
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward uniquify-separator ":")

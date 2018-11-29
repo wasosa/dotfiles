@@ -51,7 +51,10 @@ export VISUAL='emacs -nw'
 
 [ -e /etc/bash_completion.d/git ] && source /etc/bash_completion.d/git
 
-export DISPLAY=:9
+alias work='sudo openvpn --daemon --cd /etc/openvpn --config openvpn.conf --script-security 2'
+alias play='sudo pkill openvpn'
+
+export DISPLAY=:99
 export COLUMNS
 export LINES
 
