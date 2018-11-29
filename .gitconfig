@@ -4,22 +4,12 @@
 	name = Walter Sosa
 	email = wasosa@oblong.com
 [alias]
-       awk = grep --break --heading --line-number
-       dom = diff origin/master
-       doml = diff origin/master --name-status
-       fo = fetch origin
-       hide = !$HOME/bin/git-hide
        lol  = log --graph --decorate --pretty=oneline --abbrev-commit
        lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
        meld = !$HOME/bin/git-meld
        refresh = !$HOME/bin/git-refresh
        remote-add = !$HOME/bin/git-remote-add
-       roi = !$HOME/bin/git-rom
-       rom = rebase origin/master
-       sa = stash apply
-       list-hidden = !$HOME/bin/git-list-hidden
-       ss = stash save
+       skipci = !$HOME/bin/git-skipci
        this = rev-parse --abbrev-ref HEAD
-       unhide = !$HOME/bin/git-unhide
 [grep]
 	lineNumber = true

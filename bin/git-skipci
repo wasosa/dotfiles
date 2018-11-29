@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -o errexit
+set -o pipefail
+
+url="$(git remote -v 2>/dev/null)"
+if [[ "$url" =~ /mezzanine.git ]]
+then
+  master=mz
+elif [[ "$url" =~ /yovo.git ]]
+then
+  master=iz
+else
+  master=master
+fi
+
+if git checkout skipci
+then
+  git rebase --keep-empty origin/"$master"
+else
+  git checkout -b skipci
+  git commit --allow-empty -m '[skip ci]'
+fi
+
+git show
+
+# end of file
