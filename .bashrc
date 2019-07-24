@@ -21,7 +21,7 @@ shopt -s checkwinsize
 shopt -s globstar
 shopt -s direxpand >& /dev/null || true
 
-PS1='[\t][$?]: '
+PS1="[\u][\h][\w][\$?]: "
 
 case "$TERM" in
 xterm*|rxvt*)
@@ -51,13 +51,17 @@ export VISUAL='emacs -nw'
 
 [ -e /etc/bash_completion.d/git ] && source /etc/bash_completion.d/git
 
-alias work='sudo openvpn --daemon --cd /etc/openvpn --config openvpn.conf --script-security 2'
+alias work='sudo openvpn --daemon --cd /etc/openvpn --config wasosa.ovpn --script-security 2'
 alias play='sudo pkill openvpn'
 
-export DISPLAY=:99
+export DISPLAY=:98
 export COLUMNS
 export LINES
 
 [ -e $HOME/.gitlab-ci-tokens ] && source $HOME/.gitlab-ci-tokens
+
+alias bye='DISPLAY=:0 slock'
+alias cop='IMAGE=buildbot-ruby brun rubocop'
+alias cat='bat'
 
 # end of file
