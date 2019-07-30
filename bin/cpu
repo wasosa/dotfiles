@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 """Calculates percent of cpu usage in 100ms and prints graphically"""
 
@@ -40,7 +40,7 @@ def print_percentage(percentage):
     """Print a one-line histogram to represent percentage"""
 
     total = 50
-    count = (percentage * total) / 100
+    count = int((percentage * total) / 100)
     fill = '=' * count
     blank = ' ' * (total - count)
     left = '['
