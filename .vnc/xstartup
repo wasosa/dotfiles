@@ -3,6 +3,7 @@
 unset SESSION_MANAGER
 vncconfig -nowin &
 xsetroot -solid black
+xset b off
 
 while true; do
     "$HOME/.builds/dwm-6.1/bin/dwm" &
