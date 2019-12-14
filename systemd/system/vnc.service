@@ -1,0 +1,15 @@
+[Unit]
+Description=VNC Server Session
+
+[Service]
+User=wasosa
+Group=wasosa
+Type=simple
+PIDFile=/home/wasosa/.vnc/dev:1.pid
+ExecStartPre=-/usr/bin/vncserver -kill :1
+ExecStart=/usr/bin/vncserver -depth 24 -geometry 3840x2160 :1
+ExecStop=/usr/bin/vncserver -kill :1
+Restart=always
+
+[Install]
+WantedBy=graphical.target

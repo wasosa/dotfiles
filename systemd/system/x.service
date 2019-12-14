@@ -1,0 +1,9 @@
+[Unit]
+Description=X
+
+[Service]
+ExecStart=/usr/bin/xinit /etc/systemd/system/x -- /usr/bin/Xorg :0 vt07
+Restart=always
+
+[Install]
+WantedBy=graphical.target

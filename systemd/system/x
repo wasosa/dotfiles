@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -o errexit
+
+xsetroot -solid rgb:31/31/31
+xset s off
+xset b off
+
+sudo -u wasosa tinywm
